@@ -1,23 +1,34 @@
 import os
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 from dotenv import load_dotenv
+from twilio.rest import Client
 
 load_dotenv()
 
 STOCK = "TSLA"
 COMPANY_NAME = "Tesla Inc"
 CURRENT_DATE = datetime.now().strftime('%Y-%m-%d')
+THREE_DAYS_AGO = (datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d')
 
-## APIS
+## API_KEYS & TOKENS
 NEWS_API = os.getenv(key="NEWS_API")
-TWILLIO_API_KEY = os.getenv(key="TWILLIO_API_KEY")
+TWILLIO_AUTH_TOKEN = os.getenv(key="TWILLIO_AUTH_TOKEN")
+TWILLIO_ACCOUNT_SID = os.getenv(key="TWILLIO_ACCOUNT_SID")
+TWILLIO_MESSAGE_SID=os.getenv(key="TWILLIO_MESSAGE_SID")
 
 ## URLS
 VANTAGE_URL_FULL = os.getenv(key="VANTAGE_URL_FULL")
 NEWS_URL = os.getenv(key="NEWS_URL")
 
-url = os.getenv(key="url")
+## PARAMS
+NEWS_PARAMS = {
+    "q": COMPANY_NAME,
+    "from": CURRENT_DATE,
+    "to": THREE_DAYS_AGO,
+    "sortBy": "popularity",
+    "apiKey": NEWS_API
+}
 
 ## STEP 1: Use https://www.alphavantage.co
 # When STOCK price increase/decreases by 5% between yesterday and the day before yesterday then print("Get News").
@@ -41,28 +52,41 @@ def calculate_perc_change():
     change =  ((ab[1] - ab[0])  / ab[1]) * 100
     return round(change, 2)
 
-# perc_change = calculate_perc_change()
-# print(perc_change)
-#
-# if abs(perc_change) > 5:
-#     print("Get News")
-# else:
-#     print("No shaking")
-
 ## STEP 2: Use https://newsapi.org
 # Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME.
-news_resp = requests.get(url=url)
-news_resp.raise_for_status()
-news_data = news_resp.json()
-top_3_articles = news_data['articles'][:3]
-
-for article in top_3_articles:
-    print(article["description"])
-
+def get_news():
+    news_dict = {}
+    news_resp = requests.get(url=NEWS_URL, params=NEWS_PARAMS)
+    news_resp.raise_for_status()
+    news_data = news_resp.json()
+    top_3_articles = news_data['articles'][:3]
+    for idx, article in enumerate(top_3_articles,1):
+        title = article['title']
+        description = article["description"]
+        url = article['url']
+        news_dict[f"news_{idx}"] = [title, description, url]
+    return news_dict
 
 ## STEP 3: Use https://www.twilio.com
-# Send a seperate message with the percentage change and each article's title and description to your phone number. 
+# Send a seperate message with the percentage change and each article's title and description to your phone number.
+perc_change = calculate_perc_change()
+print(perc_change)
 
+if abs(perc_change) > 5:
+    news = get_news()
+    client = Client(username=TWILLIO_ACCOUNT_SID,
+                    password=TWILLIO_AUTH_TOKEN)
+    message = client.messages.create(
+        messaging_service_sid=TWILLIO_MESSAGE_SID,
+        body=f"\n{STOCK}: {perc_change}"
+             f"\n\nTitle: {news['news_1'][0]}"
+             f"\n\nBrief: {news['news_1'][1]}"
+             f"\n\nLink: {news['news_1'][-1]}",
+        from_="+19048335638",
+        to="+2349023134548"
+    )
+else:
+    print("No shaking")
 
 #Optional: Format the SMS message like this: 
 """
@@ -74,4 +98,5 @@ or
 Headline: Were Hedge Funds Right About Piling Into Tesla Inc. (TSLA)?. 
 Brief: We at Insider Monkey have gone over 821 13F filings that hedge funds and prominent investors are required to file by the SEC The 13F filings show the funds' and investors' portfolio positions as of March 31st, near the height of the coronavirus market crash.
 """
+
 
