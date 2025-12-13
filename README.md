@@ -36,7 +36,6 @@ This is a quiz-based application that demonstrates how to structure application 
 * Data structures
 * Game / quiz logic
 * Incremental feature building
-
 ---
 
 ### 3️⃣ `smtp_mailer`
@@ -136,8 +135,8 @@ PythonProject2/
 ### 1️⃣ Clone the repository
 ```bash
 
-git clone <your-repo-url>
-cd PythonProject2
+git clone https://github.com/Iyanuvicky22/pet_projects.git
+cd pet_projects
 
 ```
 ---
@@ -197,6 +196,20 @@ pip freeze > requirements.txt
 ```
 
 ---
+## Sites with API's token requirements
+* `habit_tracker`: https://pixe.la/v1/
+* `stock_news_api`: https://www.alphavantage.co/query,  https://newsapi.org/v2/everything, https://www.twilio.com/en-us
+* `weather_api`: https://api.openweathermap.org
+- Kindly do well to go through each website's documentation to understand the api usage.
+---
+
+---
+## SMTP Email Usage
+```
+https://smtpbd.com/how-to-find-smtp-server-username-and-password/
+```
+---
+
 ---
 ## 📌 Notes
 * Each project is self-contained.
