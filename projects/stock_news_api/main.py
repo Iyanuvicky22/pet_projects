@@ -1,34 +1,7 @@
-import os
 import requests
-from datetime import datetime, timedelta
-from dotenv import load_dotenv
 from twilio.rest import Client
+from env_vars import *
 
-load_dotenv()
-
-STOCK = "TSLA"
-COMPANY_NAME = "Tesla Inc"
-CURRENT_DATE = datetime.now().strftime('%Y-%m-%d')
-THREE_DAYS_AGO = (datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d')
-
-## API_KEYS & TOKENS
-NEWS_API = os.getenv(key="NEWS_API")
-TWILLIO_AUTH_TOKEN = os.getenv(key="TWILLIO_AUTH_TOKEN")
-TWILLIO_ACCOUNT_SID = os.getenv(key="TWILLIO_ACCOUNT_SID")
-TWILLIO_MESSAGE_SID=os.getenv(key="TWILLIO_MESSAGE_SID")
-
-## URLS
-VANTAGE_URL_FULL = os.getenv(key="VANTAGE_URL_FULL")
-NEWS_URL = os.getenv(key="NEWS_URL")
-
-## PARAMS
-NEWS_PARAMS = {
-    "q": COMPANY_NAME,
-    "from": CURRENT_DATE,
-    "to": THREE_DAYS_AGO,
-    "sortBy": "popularity",
-    "apiKey": NEWS_API
-}
 
 ## STEP 1: Use https://www.alphavantage.co
 # When STOCK price increase/decreases by 5% between yesterday and the day before yesterday then print("Get News").
@@ -49,7 +22,7 @@ def get_tsla_stock_price() -> list :
 
 def calculate_perc_change():
     ab = get_tsla_stock_price()
-    change =  ((ab[1] - ab[0])  / ab[1]) * 100
+    change =  ((ab[0] - ab[1])  / ab[1]) * 100
     return round(change, 2)
 
 ## STEP 2: Use https://newsapi.org
@@ -72,21 +45,28 @@ def get_news():
 perc_change = calculate_perc_change()
 print(perc_change)
 
-if abs(perc_change) > 5:
-    news = get_news()
-    client = Client(username=TWILLIO_ACCOUNT_SID,
-                    password=TWILLIO_AUTH_TOKEN)
-    message = client.messages.create(
-        messaging_service_sid=TWILLIO_MESSAGE_SID,
-        body=f"\n{STOCK}: {perc_change}"
-             f"\n\nTitle: {news['news_1'][0]}"
-             f"\n\nBrief: {news['news_1'][1]}"
-             f"\n\nLink: {news['news_1'][-1]}",
-        from_="+19048335638",
-        to="+2349023134548"
-    )
-else:
-    print("No shaking")
+try:
+    if abs(perc_change) > 1.5:
+        news = get_news()
+        client = Client(username=TWILLIO_ACCOUNT_SID,
+                        password=TWILLIO_AUTH_TOKEN)
+        message = client.messages.create(
+            messaging_service_sid=TWILLIO_MESSAGE_SID,
+            body=f"\n{STOCK}: {perc_change}"
+                 f"\n\nTitle: {news['news_1'][0]}"
+                 f"\n\nBrief: {news['news_1'][1]}"
+                 f"\n\nLink: {news['news_1'][-1]}",
+            from_=TWILLIO_LINE,
+            to=MAIN_LINE
+        )
+        # print(news)
+        # print(message.error_message)
+        print("Success")
+    else:
+        print("No shaking")
+except Exception as e:
+    print(e)
+
 
 #Optional: Format the SMS message like this: 
 """

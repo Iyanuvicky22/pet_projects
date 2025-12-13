@@ -11,3 +11,6 @@ lat = data['iss_position']['latitude']
 
 iss_pos = (long, lat)
 print(iss_pos)
+
+
+# if print("A") or print("B") and print("C"):

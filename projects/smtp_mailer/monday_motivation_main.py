@@ -1,10 +1,13 @@
+import os
 import smtplib
 import datetime as dt
 import random
+from dotenv import load_dotenv
 
+load_dotenv()
 
 my_email = "apotiks80@gmail.com"
-gmail_password = "uvhojvsdqgsnfabp"
+gmail_password = os.getenv("gmail_password")
 res_email = "aalansteel@yahoo.com"
 
 day_of_week = dt.datetime.weekday(dt.datetime.now())

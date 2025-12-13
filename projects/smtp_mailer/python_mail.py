@@ -1,5 +1,5 @@
-iyanuvicky = "hkgi mkhg qity zjpw"
-apotiks = "uvho jvsd qgsn fabp"
+
+
 
 
 import datetime as dt
