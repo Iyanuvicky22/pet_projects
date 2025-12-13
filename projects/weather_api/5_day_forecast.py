@@ -1,10 +1,15 @@
+import os
 import requests
+from dotenv import load_dotenv
+
+load_dotenv()
 
 URL = "https://api.openweathermap.org/data/2.5/forecast?"
+APP_ID = os.getenv("APP_ID")
 PARAMS = {
     "lat": 7.0,
     "lon": 4.33333,
-    "appid": "813729884e6a2563a55305dc7ed7b63f",
+    "appid": APP_ID ,
     "cnt": 4
 }
 

@@ -88,6 +88,40 @@ This project fetches and processes weather data from an external API. It reinfor
 * Automation scripts
 * API practice projects
 
+### 6️⃣ `habit_tracker`
+
+**Focus:** State management and persistence
+This project implements a simple habit tracking application to practice working with state, user input, and data persistence. It focuses on translating real-world behaviour (daily habits) into structured application logic.
+
+**Key Concepts:**
+* CRUD-style operations
+* Data persistence (files or lightweight storage)
+* Input validation
+* Application flow control
+
+**Typical Use Cases:**
+* Personal productivity tools
+* Learning stateful application design
+
+---
+
+## 🛠️ Repository Structure
+```
+PythonProject2/
+│
+├── projects/
+│   ├── api_endpoints/
+│   ├── habit_tracker/
+│   ├── quizzler-app-start/
+│   ├── smtp_mailer/
+│   ├── stock_news_api/
+│   └── weather_api/
+│
+├── __init__.py
+├── .gitignore
+├── README.md
+└── .venv/
+```
 ---
 ## 🛠️ Technologies Used
 * Python 3
@@ -97,27 +131,82 @@ This project fetches and processes weather data from an external API. It reinfor
 * Environment Variables
 ---
 
-## 🚀 How to Use
-1. Clone the repository
-2. Navigate into any project folder
-3. Create and activate a virtual environment (recommended)
-4. Install required dependencies (if applicable)
-5. Configure environment variables for API keys or credentials
-6. Run the main Python script
 
+## 🚀 How to Use
+### 1️⃣ Clone the repository
+```bash
+
+git clone <your-repo-url>
+cd PythonProject2
+
+```
+---
+### 2️⃣ Create and activate a virtual environment
+**Windows:**
+```bash
+
+python -m venv .venv
+.venv\Scripts\activate
+
+```
+**macOS / Linux:**
+```bash
+
+python3 -m venv .venv
+source .venv/bin/activate
+
+```
+You should see `(.venv)` in your terminal once activated.
+
+---
+### 3️⃣ Install dependencies using `requirements.txt`
+All shared dependencies for the projects are defined in the root `requirements.txt` file.
+
+From the project root:
+```bash
+
+pip install -r requirements.txt
+
+```
+This ensures everyone runs the projects with the same package versions.
+
+---
+### 4️⃣ Run a project
+Navigate into any project directory under `projects/` and run the main script.
+Example:
+```bash
+
+cd projects/weather_api
+python main.py
+
+```
+---
+### 5️⃣ Adding or updating dependencies
+If you install a new package:
+```bash
+
+pip install <package-name>
+
+```
+Update the dependency list:
+
+```bash
+
+pip freeze > requirements.txt
+
+```
+
+---
 ---
 ## 📌 Notes
-* Each project is self-contained
-* API keys and credentials should **never** be hard-coded
-* Environment variables are recommended for sensitive data
-
+* Each project is self-contained.
+* You have to get your API keys and credentials for each project for them to work. 
+* Using Environment variables for sensitive data is very much recommended.
 ---
-
 ## 📈 Purpose
 These projects are part of an ongoing **learning-by-building** approach, aimed at strengthening Python development, automation, and API integration skills through practical examples.
 Feel free to explore, extend, or refactor any project as needed.
-
 ---
 
 ## Author
-The_VikingLord
+**The_VikingLord**

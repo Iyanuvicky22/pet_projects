@@ -1,17 +1,9 @@
 ##################### Extra Hard Starting Project ######################
-import os
 import pandas as pd
 import datetime as dt
 import random
 import smtplib
-from dotenv import load_dotenv
-
-load_dotenv()
-
-# connection
-my_email = "apotiks80@gmail.com"
-gmail_password = os.getenv("gmail_password")
-print(gmail_password)
+from env_vars import *
 
 # 1. Update the birthdays.csv
 file_path = r"birthdays.csv"
@@ -38,10 +30,8 @@ try:
             connection.sendmail(
                 from_addr=my_email,
                 to_addrs=birthday_person_email,
-                # to_addrs="kaymicheal56@gmail.com",
                 msg=f"Subject: Happy Birthday {birthday_person_name}\n\n{contents}"
             )
-            # print(connection.)
 except FileNotFoundError:
     file_path = r"birthdays.csv"
     data = pd.read_csv(file_path)
