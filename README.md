@@ -216,9 +216,13 @@ https://smtpbd.com/how-to-find-smtp-server-username-and-password/
 * You have to get your API keys and credentials for each project for them to work. 
 * Using Environment variables for sensitive data is very much recommended.
 ---
+
+---
 ## 📈 Purpose
+
 These projects are part of an ongoing **learning-by-building** approach, aimed at strengthening Python development, automation, and API integration skills through practical examples.
 Feel free to explore, extend, or refactor any project as needed.
+
 ---
 
 ## Author
